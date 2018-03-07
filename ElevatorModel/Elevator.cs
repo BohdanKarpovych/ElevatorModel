@@ -2,7 +2,7 @@
 {
     public class Elevator
     {
-        public State Direction { get; set; }
+        public Status Direction { get; set; }
         public int CurrentFloor { get; set; }
         public int ResultFloor { get; set; }
 
@@ -12,21 +12,31 @@
             this.ResultFloor = resultFloor;
             if (CurrentFloor - ResultFloor > 0)
             {
-                Direction = State.Down;
+                Direction = Status.Down;
             }
             else if (CurrentFloor - ResultFloor < 0)
             {
-                Direction = State.Up;
+                Direction = Status.Up;
             }
             else
             {
-                Direction = State.Static;
+                Direction = Status.Stop;
             }
         }
 
         public override string ToString()
         {
             return string.Join(" ", CurrentFloor, ResultFloor);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return CurrentFloor == ((Elevator)obj).CurrentFloor && ResultFloor == ((Elevator)obj).ResultFloor;
+        }
+
+        public override int GetHashCode()
+        {
+            return CurrentFloor.GetHashCode() + ResultFloor.GetHashCode();
         }
     }
 }

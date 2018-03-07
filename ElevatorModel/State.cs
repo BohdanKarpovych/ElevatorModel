@@ -1,7 +1,7 @@
 ﻿namespace ElevatorModel
 {
-     public enum State
+     public enum Status
     {
-        Static, Up, Down
+        Stop, Up, Down
     }
 }

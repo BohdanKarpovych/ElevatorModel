@@ -25,7 +25,7 @@ namespace ElevatorModel
             }
         }
 
-        public Elevator Find(State direction, int floor)
+        public Elevator Find(Person person)
         {
             if (Elevators.Count != 0)
             {
@@ -35,23 +35,23 @@ namespace ElevatorModel
                 Elevator optimal = null;
                 foreach(var elevator in Elevators)
                 {
-                    if (direction == elevator.Direction &&
+                    if (person.Direction == elevator.Direction &&
                         (
-                          (floor >= elevator.CurrentFloor && floor <= elevator.ResultFloor) ||
-                          (floor >= elevator.ResultFloor && floor <= elevator.CurrentFloor)
+                          (person.Floor >= elevator.CurrentFloor && person.Floor <= elevator.ResultFloor) ||
+                          (person.Floor >= elevator.ResultFloor && person.Floor <= elevator.CurrentFloor)
                         )
                        )
                     {
-                        if (Math.Abs(floor - elevator.CurrentFloor) < minOptimalTimeForPast)
+                        if (Math.Abs(person.Floor - elevator.CurrentFloor) < minOptimalTimeForPast)
                         {
-                            minOptimalTimeForPast = Math.Abs(floor - elevator.CurrentFloor);
+                            minOptimalTimeForPast = Math.Abs(person.Floor - elevator.CurrentFloor);
                             optimal = elevator;
                         }
                         isAnyPast = true;
                     }
                     else if (!isAnyPast)
                     {
-                        int temp = Math.Abs(elevator.CurrentFloor - elevator.ResultFloor) + Math.Abs(floor - elevator.ResultFloor);
+                        int temp = Math.Abs(elevator.CurrentFloor - elevator.ResultFloor) + Math.Abs(person.Floor - elevator.ResultFloor);
                         if (temp < minOptimalTime)
                         {
                             minOptimalTime = temp;

@@ -1,77 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ElevatorModel;
+﻿using ElevatorModel;
+using NUnit.Framework;
 
 namespace ElevatorModelTest
 {
-    [TestClass]
+    [TestFixture]
     public class ElevatorModelUnitTest
     {
-        [TestMethod]
-        public void TestMethod1()
+        [Test, TestCaseSource("TestCases")]
+        public void ElevatorTest(Person person, ElevatorSelector elevatorSelector, Elevator expected)
         {
-            Elevator instance1 = new Elevator(1, 5);
-            Elevator instance2 = new Elevator(7, 5);
-            Elevator instance3 = new Elevator(4, 4);
-            Elevator instance4 = new Elevator(2, 9);
-            Elevator instance5 = new Elevator(7, 3);
-            var inputInfo = new { directoin = State.Up, floor = 5 };
-            var expected = instance4;
-
-            ElevatorSelector Test = new ElevatorSelector(instance1, instance2, instance3, instance4, instance5);
-            var actual = Test.Find(inputInfo.directoin, inputInfo.floor);
-
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, elevatorSelector.Find(person));
         }
 
-        [TestMethod]
-        public void TestMethod2()
+        static object[] TestCases =
         {
-            Elevator instance1 = new Elevator(5, 5);
-            Elevator instance2 = new Elevator(10, 5);
-            Elevator instance3 = new Elevator(9, 1);
-            Elevator instance4 = new Elevator(7, 9);
-            Elevator instance5 = new Elevator(1, 3);
-            var inputInfo = new { directoin = State.Up, floor = 2 };
-            var expected = instance5;
-
-            ElevatorSelector Test = new ElevatorSelector(instance1, instance2, instance3, instance4, instance5);
-            var actual = Test.Find(inputInfo.directoin, inputInfo.floor);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void TestMethod3()
-        {
-            Elevator instance1 = new Elevator(5, 1);
-            Elevator instance2 = new Elevator(1, 7);
-            Elevator instance3 = new Elevator(2, 6);
-            Elevator instance4 = new Elevator(7, 1);
-            Elevator instance5 = new Elevator(2, 2);
-            var inputInfo = new { directoin = State.Down, floor = 9 };
-            var expected = instance3;
-
-            ElevatorSelector Test = new ElevatorSelector(instance1, instance2, instance3, instance4, instance5);
-            var actual = Test.Find(inputInfo.directoin, inputInfo.floor);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void TestMethod4()
-        {
-            Elevator instance1 = new Elevator(1, 10);
-            Elevator instance2 = new Elevator(10, 10);
-            Elevator instance3 = new Elevator(1, 1);
-            Elevator instance4 = new Elevator(5, 9);
-            Elevator instance5 = new Elevator(4, 1);
-            var inputInfo = new { directoin = State.Down, floor = 7 };
-            var expected = instance2;
-
-            ElevatorSelector Test = new ElevatorSelector(instance1, instance2, instance3, instance4, instance5);
-            var actual = Test.Find(inputInfo.directoin, inputInfo.floor);
-
-            Assert.AreEqual(expected, actual);
-        }
+        new object[] {new Person(Status.Up, 7), new ElevatorSelector(new Elevator(1, 6), new Elevator(8, 8), new Elevator(9, 6), new Elevator(9, 10)), new Elevator(8, 8)},
+        new object[] {new Person(Status.Up, 7), new ElevatorSelector(new Elevator(10, 20), new Elevator(1, 8), new Elevator(6, 6)), new Elevator(1, 8) },
+        new object[] {new Person(Status.Up, 7), new ElevatorSelector(new Elevator(1, 10), new Elevator(6, 8)), new Elevator(6, 8) },
+        new object[] {new Person(Status.Down, 8), new ElevatorSelector(new Elevator(7, 8), new Elevator(10, 9), new Elevator(8, 8), new Elevator(10, 8)), new Elevator(10, 8)}
+        };
     }
 }
